@@ -30,8 +30,13 @@ public class App {
         widgets.add(new WidgetQualiteEau(donneeStation));
         widgets.add(new WidgetTemperature(donneeStation));
         
+        DonneeStationObservableImpl observable = new DonneeStationObservableImpl();
+        for(Widget widget : widgets){
+            observable.enregistrerObservateur((DonneeStationObserver) widget);
+        }
+
         /// Affichage des mises à jour de la station
-        ThreadStationMeteo threadStationMeteo = new ThreadStationMeteo(station);
+        ThreadStationMeteo threadStationMeteo = new ThreadStationMeteo(station, observable);
         threadStationMeteo.start();
 
         /// Affichage des Widgets

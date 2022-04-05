@@ -12,14 +12,20 @@ package com.fges.fges_plage;
 public class ThreadStationMeteo extends Thread {
     
     protected Station station;
+    protected DonneeStationObservable observable;
     
-    public ThreadStationMeteo(Station station){
+    public ThreadStationMeteo(Station station, DonneeStationObservable observable){
         this.station = station;
+        this.observable = observable;
     }
     
     public void run(){
         while (true){
             DonneeStation donnees = station.attenteCapteurs();
+
+            // notification des observeurs
+            observable.notifierObservateurs(donnees);
+
             System.out.println("Mise à jour reçue de la station météo");
             System.out.println("Température eau : "+donnees.getTemperatureEau());
             System.out.println("Température air : "+donnees.getTemperatureAir());
